@@ -201,7 +201,7 @@ window.onload = function() {
 
     // Create objects
     var snake = new Snake();
-    var level = new Level(20, 15, 32, 32);
+    var level = new Level(32, 24, 32, 32);
     
     // Variables
     var score = 1;              // Score
@@ -566,13 +566,13 @@ window.onload = function() {
                 var pseg = snake.segments[i-1]; // Prev segment
                 if (pseg.y < segy) {
                     // Up
-                    tx = 2; ty = 0;
+                    tx = 3; ty = 1;
                 } else if (pseg.x > segx) {
                     // Right
                     tx = 3; ty = 0;
                 } else if (pseg.y > segy) {
                     // Down
-                    tx = 3; ty = 1;
+                    tx = 2; ty = 0;
                 } else if (pseg.x < segx) {
                     // Left
                     tx = 2; ty = 1;
@@ -584,21 +584,21 @@ window.onload = function() {
                 if (pseg.x < segx && nseg.x > segx || nseg.x < segx && pseg.x > segx) {
                     // Horizontal Left-Right
                     tx = 2; ty = 3;
-                } else if (pseg.x < segx && nseg.y > segy || nseg.x < segx && pseg.y > segy) {
-                    // Angle Left-Down
-                    tx = 0; ty = 2;
                 } else if (pseg.y < segy && nseg.y > segy || nseg.y < segy && pseg.y > segy) {
                     // Vertical Up-Down
                     tx = 2; ty = 2;
+                } else if (pseg.x < segx && nseg.y > segy || nseg.x < segx && pseg.y > segy) {
+                    // Angle Left-Down
+                    tx = 1; ty = 2;
                 } else if (pseg.y < segy && nseg.x < segx || nseg.y < segy && pseg.x < segx) {
                     // Angle Top-Left
-                    tx = 0; ty = 3;
+                    tx = 1; ty = 3;
                 } else if (pseg.x > segx && nseg.y < segy || nseg.x > segx && pseg.y < segy) {
                     // Angle Right-Up
-                    tx = 1; ty = 3;
+                    tx = 0; ty = 3;
                 } else if (pseg.y > segy && nseg.x > segx || nseg.y > segy && pseg.x > segx) {
                     // Angle Down-Right
-                    tx = 2; ty = 2;
+                    tx = 0; ty = 2;
                 }
             }
             
