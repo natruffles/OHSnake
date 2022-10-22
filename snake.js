@@ -201,7 +201,7 @@ window.onload = function() {
 
     // Create objects
     var snake = new Snake();
-    var level = new Level(32, 24, 32, 32);
+    var level = new Level(46, 20, 32, 32);
     
     // Variables
     var score = 1;              // Score
