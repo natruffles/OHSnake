@@ -20,6 +20,18 @@
 
 // The function gets called when the window is fully loaded
 window.onload = function() {
+    //initializes the array of 49 states 
+    const states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", 
+    "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", 
+    "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", 
+    "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", 
+    "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", 
+    "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", 
+    "Wisconsin", "Wyoming"];
+
+    let conqueredStates = ["Ohio"];
+    let stateToConquer = "";
+
     // Get the canvas and context
     var canvas = document.getElementById("viewport"); 
     var context = canvas.getContext("2d");
@@ -192,7 +204,7 @@ window.onload = function() {
     var level = new Level(20, 15, 32, 32);
     
     // Variables
-    var score = 0;              // Score
+    var score = 1;              // Score
     var gameover = true;        // Game is over
     var gameovertime = 1;       // How long we have been game over
     var gameoverdelay = 0.5;    // Waiting time after game over
@@ -231,16 +243,69 @@ window.onload = function() {
         
         // Generate the default level
         level.generate();
+
+        //resets array of conquered states
+        conqueredStates = ["Ohio"];
         
+        //display a new state name
+        stateToConquer = displayState();
+
+        //remove the list of conquered states from game over
+        let header = document.querySelector("h2");
+        header.innerHTML = "";
+
         // Add an apple
         addApple();
         
         // Initialize the score
-        score = 0;
+        score = 1;
         
         // Initialize variables
         gameover = false;
     }
+
+    //display the states you conquered when the game ends:
+    function displayConqueredStates() {
+        let header = document.querySelector("h2");
+        let conqueredString = "Conquered States: ";
+        for (let i = 0; i < conqueredStates.length; i ++) {
+            if (i < conqueredStates.length - 1) {
+                conqueredString = conqueredString.concat(conqueredStates[i] + ", ");
+            } else {
+                conqueredString = conqueredString.concat(conqueredStates[i] + "! Great job!");
+            }
+        }
+        header.innerHTML = conqueredString;
+    }
+
+    //display a new state name whenever an apple is added
+    function displayState() {
+        let header = document.querySelector("h1");
+
+        //get random state name 
+        let stateName = getRandomStateName();
+        //check if state has already been conquered, get new state
+        while (conqueredStates.includes(stateName)) {
+            stateName = getRandomStateName();
+        }  
+
+        header.innerHTML = "State to Conquer: " + stateName;
+
+        return stateName;
+    }
+
+    //gets a random state name from array of states
+    function getRandomStateName() {
+        return states[Math.floor(Math.random() * states.length)];
+    }
+
+    //adds the stateName to the conqueredStates array
+    function conquerState() {
+        conqueredStates.push(stateToConquer);
+        console.log(conqueredStates);
+    }
+
+
     
     // Add an apple to the level at an empty position
     function addApple() {
@@ -362,6 +427,12 @@ window.onload = function() {
                     if (level.tiles[nx][ny] == 2) {
                         // Remove the apple
                         level.tiles[nx][ny] = 0;
+
+                        //add state to conquered list
+                        conquerState();
+
+                        //display a new state name
+                        stateToConquer = displayState();
                         
                         // Add a new apple
                         addApple();
@@ -412,12 +483,15 @@ window.onload = function() {
             
         // Game over
         if (gameover) {
+            //display conquered states
+            displayConqueredStates();
+
             context.fillStyle = "rgba(0, 0, 0, 0.5)";
             context.fillRect(0, 0, canvas.width, canvas.height);
             
             context.fillStyle = "#ffffff";
             context.font = "24px Verdana";
-            drawCenterText("Score: " + snake.segments.length + " Press any key to start!", 0, canvas.height/2, canvas.width);
+            drawCenterText("Score: " + score + " Press any key to start!", 0, canvas.height/2, canvas.width);
         }
     }
     
