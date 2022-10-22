@@ -200,7 +200,7 @@ window.onload = function() {
     // Initialize the game
     function init() {
         // Load images
-        images = loadImages(["snake-graphics.png"]);
+        images = loadImages(["assets/snakeSprite.png"]);
         tileimage = images[0];
     
         // Add mouse events
@@ -476,32 +476,32 @@ window.onload = function() {
                 var nseg = snake.segments[i+1]; // Next segment
                 if (segy < nseg.y) {
                     // Up
-                    tx = 3; ty = 0;
+                    tx = 0; ty = 0;
                 } else if (segx > nseg.x) {
                     // Right
-                    tx = 4; ty = 0;
+                    tx = 1; ty = 0;
                 } else if (segy > nseg.y) {
                     // Down
-                    tx = 4; ty = 1;
+                    tx = 1; ty = 1;
                 } else if (segx < nseg.x) {
                     // Left
-                    tx = 3; ty = 1;
+                    tx = 0; ty = 1;
                 }
             } else if (i == snake.segments.length-1) {
                 // Tail; Determine the correct image
                 var pseg = snake.segments[i-1]; // Prev segment
                 if (pseg.y < segy) {
                     // Up
-                    tx = 3; ty = 2;
+                    tx = 2; ty = 0;
                 } else if (pseg.x > segx) {
                     // Right
-                    tx = 4; ty = 2;
+                    tx = 3; ty = 0;
                 } else if (pseg.y > segy) {
                     // Down
-                    tx = 4; ty = 3;
+                    tx = 3; ty = 1;
                 } else if (pseg.x < segx) {
                     // Left
-                    tx = 3; ty = 3;
+                    tx = 2; ty = 1;
                 }
             } else {
                 // Body; Determine the correct image
@@ -509,22 +509,22 @@ window.onload = function() {
                 var nseg = snake.segments[i+1]; // Next segment
                 if (pseg.x < segx && nseg.x > segx || nseg.x < segx && pseg.x > segx) {
                     // Horizontal Left-Right
-                    tx = 1; ty = 0;
+                    tx = 2; ty = 3;
                 } else if (pseg.x < segx && nseg.y > segy || nseg.x < segx && pseg.y > segy) {
                     // Angle Left-Down
-                    tx = 2; ty = 0;
+                    tx = 0; ty = 2;
                 } else if (pseg.y < segy && nseg.y > segy || nseg.y < segy && pseg.y > segy) {
                     // Vertical Up-Down
-                    tx = 2; ty = 1;
+                    tx = 2; ty = 2;
                 } else if (pseg.y < segy && nseg.x < segx || nseg.y < segy && pseg.x < segx) {
                     // Angle Top-Left
-                    tx = 2; ty = 2;
+                    tx = 0; ty = 3;
                 } else if (pseg.x > segx && nseg.y < segy || nseg.x > segx && pseg.y < segy) {
                     // Angle Right-Up
-                    tx = 0; ty = 1;
+                    tx = 1; ty = 3;
                 } else if (pseg.y > segy && nseg.x > segx || nseg.y > segy && pseg.x > segx) {
                     // Angle Down-Right
-                    tx = 0; ty = 0;
+                    tx = 2; ty = 2;
                 }
             }
             
