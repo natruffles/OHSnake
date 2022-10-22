@@ -1,0 +1,4 @@
+Ideas:
+change the sprite sheet so that the snake has an ohio design
+change the fruit sprites to be on a different sheet, with each of the 50 states
+Document each of the 50 states in a 
