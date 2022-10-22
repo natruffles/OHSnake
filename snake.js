@@ -254,8 +254,8 @@ window.onload = function() {
         let header = document.querySelector("h2");
         header.innerHTML = "";
 
-        // Add an apple
-        addApple();
+        // Add a state
+        addState(stateToConquer);
         
         // Initialize the score
         score = 1;
@@ -306,17 +306,16 @@ window.onload = function() {
     }
 
 
-    
-    // Add an apple to the level at an empty position
-    function addApple() {
-        // Loop until we have a valid apple
+    // Add an state to the level at an empty position
+    function addState(stateName) {
+        // Loop until we have a valid state
         var valid = false;
         while (!valid) {
             // Get a random position
             var ax = randRange(0, level.columns-1);
             var ay = randRange(0, level.rows-1);
             
-            // Make sure the snake doesn't overlap the new apple
+            // Make sure the snake doesn't overlap the new state
             var overlap = false;
             for (var i=0; i<snake.segments.length; i++) {
                 // Get the position of the current snake segment
@@ -332,11 +331,25 @@ window.onload = function() {
             
             // Tile must be empty
             if (!overlap && level.tiles[ax][ay] == 0) {
-                // Add an apple at the tile position
-                level.tiles[ax][ay] = 2;
+                // Add a state at the tile position
+                level.tiles[ax][ay] = determineTileNumber(stateName);
                 valid = true;
             }
         }
+    }
+
+    //based on the name of the state, determine the tile number 
+    function determineTileNumber(nameOfState) {
+        //if tileNum is 2-51, is good
+        //if its 1, then the findIndex didn't work
+        for (let i = 0; i < states.length; i++) {
+            if (nameOfState == states[i]) {
+                console.log("state to conquer tile number: " + (i+2));
+                return i + 2;
+            }
+        }
+        console.log("Error! tile not found!")
+        return 1;
     }
     
     // Main loop
@@ -423,9 +436,9 @@ window.onload = function() {
                     // Move the snake
                     snake.move();
                     
-                    // Check collision with an apple
-                    if (level.tiles[nx][ny] == 2) {
-                        // Remove the apple
+                    // Check collision with a state
+                    if (level.tiles[nx][ny] >= 2) {
+                        // Remove the state
                         level.tiles[nx][ny] = 0;
 
                         //add state to conquered list
@@ -434,8 +447,8 @@ window.onload = function() {
                         //display a new state name
                         stateToConquer = displayState();
                         
-                        // Add a new apple
-                        addApple();
+                        // Add a new state
+                        addState(stateToConquer);
                         
                         // Grow the snake
                         snake.grow();
@@ -513,22 +526,26 @@ window.onload = function() {
                     // Wall
                     context.fillStyle = "#bcae76";
                     context.fillRect(tilex, tiley, level.tilewidth, level.tileheight);
-                } else if (tile == 2) {
-                    // Apple
-                    
-                    // Draw apple background
-                    context.fillStyle = "#f7e697";
-                    context.fillRect(tilex, tiley, level.tilewidth, level.tileheight);
-                    
-                    // Draw the apple image
-                    var tx = 0;
-                    var ty = 3;
-                    var tilew = 64;
-                    var tileh = 64;
-                    context.drawImage(tileimage, tx*tilew, ty*tileh, tilew, tileh, tilex, tiley, level.tilewidth, level.tileheight);
+                } else if (tile >= 2) {
+                    // State
+                    drawState(tile, tilex, tiley);
                 }
             }
         }
+    }
+
+    //If tile type is 2 or greater, draw the state based on tileNum
+    function drawState(tileNum, tilex, tiley) {
+        // Draw state background
+        context.fillStyle = "#f7e697";
+        context.fillRect(tilex, tiley, level.tilewidth, level.tileheight);
+        
+        // Draw the state image
+        var tx = 0;
+        var ty = 3;
+        var tilew = 64;
+        var tileh = 64;
+        context.drawImage(tileimage, tx*tilew, ty*tileh, tilew, tileh, tilex, tiley, level.tilewidth, level.tileheight);
     }
     
     // Draw the snake
