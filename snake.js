@@ -20,7 +20,7 @@
 
 // The function gets called when the window is fully loaded
 window.onload = function() {
-    //initializes the array of 49 states 
+    //initializes the array of 50 states 
     const states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", 
     "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", 
     "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", 
@@ -31,6 +31,8 @@ window.onload = function() {
 
     let conqueredStates = ["Ohio"];
     let stateToConquer = "";
+    let numOfStatesToRender = 3;
+    let incorrectStatePositions = new Array(numOfStatesToRender - 1).fill([0, 0]);
 
     // Get the canvas and context
     var canvas = document.getElementById("viewport"); 
@@ -254,8 +256,12 @@ window.onload = function() {
         let header = document.querySelector("h2");
         header.innerHTML = "";
 
-        // Add a state
-        addState(stateToConquer);
+        //reset the incorrect state positions to each be in [0,0]
+        //will immediately be overwritten in the addStates function below
+        //incorrectStatePositions = new Array(numOfStatesToRender - 1).fill([0, 0]);
+
+        // Add states and incorrect states
+        addStates(stateToConquer, numOfStatesToRender);
         
         // Initialize the score
         score = 1;
@@ -306,40 +312,53 @@ window.onload = function() {
     }
 
 
-    // Add an state to the level at an empty position
-    function addState(stateName) {
-        // Loop until we have a valid state
-        var valid = false;
-        while (!valid) {
-            // Get a random position
-            var ax = randRange(0, level.columns-1);
-            var ay = randRange(0, level.rows-1);
-            
-            // Make sure the snake doesn't overlap the new state
-            var overlap = false;
-            for (var i=0; i<snake.segments.length; i++) {
-                // Get the position of the current snake segment
-                var sx = snake.segments[i].x;
-                var sy = snake.segments[i].y;
+    // Add states to the level at an empty position
+    function addStates(stateName, numOfStates) {
+        let correctStateNum = 0;
+
+        for (let z = 0; z < numOfStates; z++) {
+            // Loop until we have a valid state
+            var valid = false;
+            while (!valid) {
+                // Get a random position
+                var ax = randRange(0, level.columns-1);
+                var ay = randRange(0, level.rows-1);
                 
-                // Check overlap
-                if (ax == sx && ay == sy) {
-                    overlap = true;
-                    break;
+                // Make sure the snake doesn't overlap the new state
+                var overlap = false;
+                for (var i=0; i<snake.segments.length; i++) {
+                    // Get the position of the current snake segment
+                    var sx = snake.segments[i].x;
+                    var sy = snake.segments[i].y;
+                    
+                    // Check overlap
+                    if (ax == sx && ay == sy) {
+                        overlap = true;
+                        break;
+                    }
                 }
-            }
-            
-            // Tile must be empty
-            if (!overlap && level.tiles[ax][ay] == 0) {
-                // Add a state at the tile position
-                level.tiles[ax][ay] = determineTileNumber(stateName);
-                valid = true;
+                // Tile must be empty
+                if (!overlap && level.tiles[ax][ay] == 0) {
+                    // Add correct state at the tile position
+                    if (z == 0) {
+                        correctStateNum = determineCorrectTileNumber(stateName);
+                        level.tiles[ax][ay] = correctStateNum;
+                    } 
+                    // add incorrect states at other tile positions
+                    else {
+                        level.tiles[ax][ay] = determineIncorrectTileNumber(correctStateNum);
+                        console.log(incorrectStatePositions);
+                        incorrectStatePositions[z-1] = [ax, ay];
+                        console.log(incorrectStatePositions[z-1]);
+                    }
+                    valid = true;
+                }
             }
         }
     }
 
-    //based on the name of the state, determine the tile number 
-    function determineTileNumber(nameOfState) {
+    //based on the name of the correct state, determine the tile number 
+    function determineCorrectTileNumber(nameOfState) {
         //if tileNum is 2-51, is good
         //if its 1, then the findIndex didn't work
         for (let i = 0; i < states.length; i++) {
@@ -348,10 +367,21 @@ window.onload = function() {
                 return i + 2;
             }
         }
-        console.log("Error! tile not found!")
+        console.log("Error! tile not found!");
         return 1;
     }
-    
+
+    //determine random tile numbers for incorrect states to be displayed
+    function determineIncorrectTileNumber(dontPickThisState) {
+        let tileNum = randRange(2, states.length + 1);
+        while (tileNum == dontPickThisState) {
+            tileNum = randRange(2, states.length + 1);
+        }
+        console.log("incorrect state tile num: " + tileNum);
+        return tileNum;
+    }
+
+
     // Main loop
     function main(tframe) {
         // Request animation frames
@@ -438,25 +468,52 @@ window.onload = function() {
                     
                     // Check collision with a state
                     if (level.tiles[nx][ny] >= 2) {
-                        // Remove the state
+
+                        //remove the state
                         level.tiles[nx][ny] = 0;
+                        
+                        let incorrectState = false;
 
-                        //add state to conquered list
-                        conquerState();
+                        for (let i = 0; i < incorrectStatePositions.length; i++) {
+                            if (nx == incorrectStatePositions[i][0] && ny == incorrectStatePositions[i][1]) {
+                                incorrectState = true;
+                            }
+                        }
 
-                        //display a new state name
-                        stateToConquer = displayState();
+                        //check if incorrect state
+                        if (incorrectState) {
+                            //tell the user theyre stupid
+                            console.log("INCORRECT STATE CHOSEN")
                         
-                        // Add a new state
-                        addState(stateToConquer);
+                            //Remove a point to the score
+                            score--;
+                        }
+
+                        //check if correct state
+                        else {
+                            //remove the other 2 states
+                            for (let i = 0; i < incorrectStatePositions.length; i++) {
+                                level.tiles[incorrectStatePositions[i][0]][incorrectStatePositions[i][1]] = 0;
+                            }
+
+                            console.log("CORRECT STATE CHOSEN");
+
+                            //add state to conquered list
+                            conquerState();
+
+                            //display a new state name
+                            stateToConquer = displayState();
                         
-                        // Grow the snake
-                        snake.grow();
+                            // Add new states
+                            addStates(stateToConquer, numOfStatesToRender);
                         
-                        // Add a point to the score
-                        score++;
+                            // Grow the snake
+                            snake.grow();
+                        
+                            // Add a point to the score
+                            score++;
+                        }
                     }
-                    
 
                 }
             } else {
