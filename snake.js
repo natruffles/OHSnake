@@ -612,290 +612,293 @@ window.onload = function() {
             // 
             case 3:
                 //add tx and ty to EACH of these cases
-                tx = 0;
+                tx = 1;
                 ty = 0;
                 break;
             // 
             case 4:
                 //add tx and ty to EACH of these cases
-                tx = 0;
+                tx = 2;
                 ty = 0;
                 break;
             // 
             case 5:
                 //add tx and ty to EACH of these cases
-                tx = 0;
+                tx = 3;
                 ty = 0;
                 break;
             // 
             case 6:
                 //add tx and ty to EACH of these cases
-                tx = 0;
+                tx = 4;
                 ty = 0;
                 break;
             // 
             case 7:
                 //add tx and ty to EACH of these cases
-                tx = 0;
+                tx = 5;
                 ty = 0;
                 break;
             // 
             case 8:
                 //add tx and ty to EACH of these cases
-                tx = 0;
+                tx = 6;
                 ty = 0;
                 break;
             // 
             case 9:
                 //add tx and ty to EACH of these cases
-                tx = 0;
+                tx = 7;
                 ty = 0;
                 break;
             // 
             case 10:
                 //add tx and ty to EACH of these cases
                 tx = 0;
-                ty = 0;
+                ty = 1;
                 break;
             // 
             case 11:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 1;
+                ty = 1;
                 break;
             // 
             case 12:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 2;
+                ty = 1;
                 break;
             // 
             case 13:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 3;
+                ty = 1;
                 break;
             // 
             case 14:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 4;
+                ty = 1;
                 break;
             // 
             case 15:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 5;
+                ty = 1;
                 break;
             // 
             case 16:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 6;
+                ty = 1;
                 break;
             // 
             case 17:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 7;
+                ty = 1;
                 break;
             // 
             case 18:
                 //add tx and ty to EACH of these cases
                 tx = 0;
-                ty = 0;
+                ty = 2;
                 break;
             // 
             case 19:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 1;
+                ty = 2;
                 break;
             // 
             case 20:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 2;
+                ty = 2;
                 break;
             // 
             case 21:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 3;
+                ty = 2;
                 break;
             // 
             case 22:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 4;
+                ty = 2;
                 break;
             // 
             case 23:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 5;
+                ty = 2;
                 break;
             // 
             case 24:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 6;
+                ty = 2;
                 break;
             // 
             case 25:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 7;
+                ty = 2;
                 break;
             // 
             case 26:
                 //add tx and ty to EACH of these cases
                 tx = 0;
-                ty = 0;
+                ty = 3;
                 break;
             // 
             case 27:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 1;
+                ty = 3;
                 break;
             // 
             case 28:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 2;
+                ty = 3;
                 break;
             // 
             case 29:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 3;
+                ty = 3;
                 break;
             // 
             case 30:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 4;
+                ty = 3;
                 break;
             // 
             case 31:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 5;
+                ty = 3;
                 break;
             // 
             case 32:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 6;
+                ty = 3;
                 break;
             // 
             case 33:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 7;
+                ty = 3;
                 break;
             // 
             case 34:
                 //add tx and ty to EACH of these cases
                 tx = 0;
-                ty = 0;
+                ty = 4;
                 break;
             // 
             case 35:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 1;
+                ty = 4;
                 break;
             // 
             case 36:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 2;
+                ty = 4;
                 break;
             // 
             case 37:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 3;
+                ty = 4;
                 break;
             // 
             case 38:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 4;
+                ty = 4;
                 break;
             // 
             case 39:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 5;
+                ty = 4;
                 break;
             // 
             case 40:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 6;
+                ty = 4;
                 break;
             // 
             case 41:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 7;
+                ty = 4;
                 break;
             // 
             case 42:
                 //add tx and ty to EACH of these cases
                 tx = 0;
-                ty = 0;
+                ty = 5;
                 break;
             // 
             case 43:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 1;
+                ty = 5;
                 break;
             // 
             case 44:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 2;
+                ty = 5;
                 break;
             // 
             case 45:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 3;
+                ty = 5;
                 break;
             // 
             case 46:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 4;
+                ty = 5;
                 break;
             // 
             case 47:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 5;
+                ty = 5;
                 break;
             // 
             case 48:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 6;
+                ty = 5;
                 break;
             // 
             case 49:
                 //add tx and ty to EACH of these cases
-                tx = 0;
-                ty = 0;
+                tx = 7;
+                ty = 5;
                 break;
-            // 
             case 50:
                 //add tx and ty to EACH of these cases
                 tx = 0;
-                ty = 0;
+                ty = 6;
+                break;
+            case 51:
+                tx = 1;
+                ty = 6;
                 break;
         }
         var tilew = 64;
