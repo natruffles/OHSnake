@@ -311,9 +311,9 @@ window.onload = function() {
         for (let j = 0; j < conqueredStates.length; j++) {
             text = conqueredStates[j] + ":";
             diagnosticContext.fillText(text, Math.floor(diagnostic.width/10), 150 + 100*j);
-            //tileNum = determineCorrectTileNumber(conquerStates[j]);
-            //[Tx, Ty] = drawStateOnGameBoard(tileNum, 0, 0, true);
-            //diagnosticContext.drawImage(stateimage, Tx*tilew, Ty*tileh, tilew, tileh, tilex, tiley, level.tilewidth, level.tileheight);
+            tileNum = determineCorrectTileNumber(conqueredStates[j]);
+            [Tx, Ty] = drawStateOnGameBoard(tileNum, 0, 0, true);
+            diagnosticContext.drawImage(stateimage, Tx*64, Ty*64, 64, 64, Math.floor(diagnostic.width/2), 150 + 100*j, 64, 64);
         }
     }
 
