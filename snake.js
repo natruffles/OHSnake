@@ -20,6 +20,14 @@
 
 // The function gets called when the window is fully loaded
 window.onload = function() {
+    //load sounds
+    let endSound = new Audio('assets/end.mp3');
+    let playEndCommand = false;
+    let correctSound = new Audio('assets/correctState.mp3');
+    let playCorrectStateCommand = false;
+    let incorrectSound = new Audio('assets/incorrectState.mp3');
+    let playIncorrectStateCommand = false;
+
     //initializes the array of 50 states 
     const states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", 
     "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", 
@@ -434,6 +442,7 @@ window.onload = function() {
         } else {
             // Update and render the game
             update(tframe);
+            playSounds();
             render();
         }
     }
@@ -477,7 +486,6 @@ window.onload = function() {
                     if (nx == sx && ny == sy) {
                         // Found a snake part
                         gameover = true;
-                        break;
                     }
                 }
                 
@@ -503,6 +511,9 @@ window.onload = function() {
 
                         //check if incorrect state
                         if (incorrectState) {
+                            //play incorrect noise
+                            playIncorrectStateCommand = true;
+
                             //tell the user theyre stupid
                             console.log("INCORRECT STATE CHOSEN")
                         
@@ -512,6 +523,9 @@ window.onload = function() {
 
                         //check if correct state
                         else {
+                            //play incorrect noise
+                            playCorrectStateCommand = true;
+
                             //remove the other 2 states
                             for (let i = 0; i < incorrectStatePositions.length; i++) {
                                 level.tiles[incorrectStatePositions[i][0]][incorrectStatePositions[i][1]] = 0;
@@ -544,6 +558,7 @@ window.onload = function() {
             
             if (gameover) {
                 gameovertime = 0;
+                playEndCommand = true;
             }
         }
     }
@@ -583,6 +598,23 @@ window.onload = function() {
             context.fillStyle = "#ffffff";
             context.font = "24px Verdana";
             drawCenterText("Score: " + score + " Press any key to start!", 0, canvas.height/2, canvas.width);
+        }
+    }
+
+    function playSounds() {
+        if (playEndCommand) {
+            playEndCommand = false;
+            endSound.play();
+        }
+
+        if (playCorrectStateCommand) {
+            playCorrectStateCommand = false;
+            correctSound.play();
+        }
+
+        if (playIncorrectStateCommand) {
+            playIncorrectStateCommand = false;
+            incorrectSound.play();
         }
     }
     
