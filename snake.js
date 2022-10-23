@@ -37,16 +37,21 @@ window.onload = function() {
     "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", 
     "Wisconsin", "Wyoming"];
 
-    let conqueredStates = ["Ohio"];
+    let conqueredStates = ["Ohio"];  //add "Ohio" in here
     let stateToConquer = "";
     let numOfStatesToRender = 3;
-    let incorrectStatePositions = new Array(numOfStatesToRender - 1).fill([0, 0]);
+    let incorrectStatePositions = new Array(numOfStatesToRender - 1).fill([0, 0, ""]);
 
-    // Get the canvas and context
-    var canvas = document.getElementById("viewport"); 
+    let incorrectStateFlag = false;
+    let incorrectStateName = "";
+    let lastRenderTime = 0;
+    let secondsSinceStart = 0;
+
+    // Get the canvas and context 
+    var canvas = document.getElementById("viewport");
     var context = canvas.getContext("2d");
 
-    var diagnosticScreen = document.getElementById("diagnostic"); 
+    var diagnosticScreen = document.getElementById("diagnostic");
     var diagnosticContext = diagnosticScreen.getContext("2d");
 
     
@@ -167,7 +172,12 @@ window.onload = function() {
     // Check we are allowed to move
     Snake.prototype.tryMove = function(dt) {
         this.movedelay += dt;
-        var maxmovedelay = 1 / this.speed;
+        if (!incorrectStateFlag) {
+            var maxmovedelay = 1 / this.speed;
+        }
+        else {
+            var maxmovedelay = 1000 / this.speed;
+        }
         if (this.movedelay > maxmovedelay) {
             return true;
         }
@@ -218,7 +228,6 @@ window.onload = function() {
     var level = new Level(30, 14, 48, 48);
     
     // Variables
-    var score = 1;              // Score
     var gameover = true;        // Game is over
     var gameovertime = 1;       // How long we have been game over
     var gameoverdelay = 0.5;    // Waiting time after game over
@@ -274,10 +283,7 @@ window.onload = function() {
 
         // Add states and incorrect states
         addStates(stateToConquer, numOfStatesToRender);
-        
-        // Initialize the score
-        score = 1;
-        
+
         // Initialize variables
         gameover = false;
     }
@@ -293,28 +299,34 @@ window.onload = function() {
             }
         }
 
-        diagnosticScreen.height = conqueredStates.length * 100 + 150;
+        diagnosticScreen.height = conqueredStates.length * 100 + 100;
         //set the text color 
-        diagnosticContext.fillStyle = "#bbbbbb";
+        diagnosticContext.fillStyle = "#353535";
         diagnosticContext.fillRect(0, 0, diagnosticScreen.width, diagnosticScreen.height);
 
         //set text parameters
         diagnosticContext.fillStyle = "#ffffff";
-        diagnosticContext.font = "24px Verdana";
+        diagnosticContext.font = "bold 24px Times";
         drawCenterTextDiag("Check below to view your conquest!", 0, 50, diagnosticScreen.width);
 
         let text = "";
-        //let tileNum = 0;
-        //let Tx = 0;
-        //let Ty = 0;
+        let tileNum = 0;
+        let Tx = 0;
+        let Ty = 0;
+        let textdim = null;
         
         for (let j = 0; j < conqueredStates.length; j++) {
             text = conqueredStates[j] + ":";
-            diagnosticContext.fillText(text, Math.floor(diagnostic.width/10), 150 + 100*j);
+            textdim = diagnosticContext.measureText(text);
+            diagnosticContext.fillText(text, diagnostic.width/2-30-textdim.width, 150 + 100*j);
             tileNum = determineCorrectTileNumber(conqueredStates[j]);
             [Tx, Ty] = drawStateOnGameBoard(tileNum, 0, 0, true);
-            diagnosticContext.drawImage(stateimage, Tx*64, Ty*64, 64, 64, Math.floor(diagnostic.width/2), 150 + 100*j, 64, 64);
+            diagnosticContext.drawImage(stateimage, Tx*64, Ty*64, 64, 64, diagnostic.width/2 + 20, 115 + 100*j, 64, 64);
         }
+
+        //display credits
+        let link = document.querySelector("p");
+        link.innerHTML = `<a href="https://devpost.com/software/ohsnake" target="_blank">about</a>`;
     }
 
     //display a new state name whenever an apple is added
@@ -327,14 +339,17 @@ window.onload = function() {
             stateName = getRandomStateName();
         }  
 
-        diagnosticScreen.height = 68;
+        //remove credits while playing the game
+        let link = document.querySelector("p");
+        link.innerHTML = ``;
+        diagnosticScreen.height = 50;
         //set the text color 
-        diagnosticContext.fillStyle = "#bbbbbb";
+        diagnosticContext.fillStyle = "#353535";
         diagnosticContext.fillRect(0, 0, diagnosticScreen.width, diagnosticScreen.height);
 
         //draw text on the diagnosticScreen
         diagnosticContext.fillStyle = "#ffffff";
-        diagnosticContext.font = "24px Verdana";
+        diagnosticContext.font = "bold 24px Times";
         drawCenterTextDiag("State to Conquer: " + stateName, 0, diagnosticScreen.height/2, diagnosticScreen.width);
 
         return stateName;
@@ -348,7 +363,11 @@ window.onload = function() {
     //adds the stateName to the conqueredStates array
     function conquerState() {
         conqueredStates.push(stateToConquer);
-        console.log(conqueredStates);
+    }
+
+    //gets percentage of US conquered
+    function getConquerPercentage() {
+        return Math.round((conqueredStates.length / states.length) * 100);
     }
 
 
@@ -387,9 +406,8 @@ window.onload = function() {
                     // add incorrect states at other tile positions
                     else {
                         level.tiles[ax][ay] = determineIncorrectTileNumber(correctStateNum);
-                        console.log(incorrectStatePositions);
-                        incorrectStatePositions[z-1] = [ax, ay];
-                        console.log(incorrectStatePositions[z-1]);
+                        let incorrectStateNameQ = states[level.tiles[ax][ay] - 2];
+                        incorrectStatePositions[z-1] = [ax, ay, incorrectStateNameQ];
                     }
                     valid = true;
                 }
@@ -403,7 +421,6 @@ window.onload = function() {
         //if its 1, then the findIndex didn't work
         for (let i = 0; i < states.length; i++) {
             if (nameOfState == states[i]) {
-                console.log("state to conquer tile number: " + (i+2));
                 return i + 2;
             }
         }
@@ -417,7 +434,6 @@ window.onload = function() {
         while (tileNum == dontPickThisState) {
             tileNum = randRange(2, states.length + 1);
         }
-        console.log("incorrect state tile num: " + tileNum);
         return tileNum;
     }
 
@@ -426,30 +442,8 @@ window.onload = function() {
     function main(tframe) {
         // Request animation frames
         window.requestAnimationFrame(main);
-        
-        if (!initialized) {
-            // Preloader
-            
-            // Clear the canvas
-            context.clearRect(0, 0, canvas.width, canvas.height);
 
-            //clear the diagnostic screen
-            diagnosticContext.clearRect(0, 0, diagnosticScreen.width, diagnosticScreen.height);
-            
-            // Draw a progress bar
-            var loadpercentage = loadcount/loadtotal;
-            context.strokeStyle = "#ff8080";
-            context.lineWidth=3;
-            context.strokeRect(18.5, 0.5 + canvas.height - 51, canvas.width-37, 32);
-            context.fillStyle = "#ff8080";
-            context.fillRect(18.5, 0.5 + canvas.height - 51, loadpercentage*(canvas.width-37), 32);
-            
-            // Draw the progress text
-            var loadtext = "Loaded " + loadcount + "/" + loadtotal + " images";
-            context.fillStyle = "#000000";
-            context.font = "16px Verdana";
-            context.fillText(loadtext, 18, 0.5 + canvas.height - 63);
-            
+        if (!initialized) {
             if (preloaded) {
                 initialized = true;
             }
@@ -519,20 +513,21 @@ window.onload = function() {
 
                         for (let i = 0; i < incorrectStatePositions.length; i++) {
                             if (nx == incorrectStatePositions[i][0] && ny == incorrectStatePositions[i][1]) {
+                                incorrectStateName = incorrectStatePositions[i][2];
                                 incorrectState = true;
                             }
                         }
 
                         //check if incorrect state
                         if (incorrectState) {
+
+                            //will flash the screen red elsewhere, freeze the snake for 1 second
+                            incorrectStateFlag = true;
+
+
+
                             //play incorrect noise
                             playIncorrectStateCommand = true;
-
-                            //tell the user theyre stupid
-                            console.log("INCORRECT STATE CHOSEN")
-                        
-                            //Remove a point to the score
-                            score--;
                         }
 
                         //check if correct state
@@ -545,10 +540,13 @@ window.onload = function() {
                                 level.tiles[incorrectStatePositions[i][0]][incorrectStatePositions[i][1]] = 0;
                             }
 
-                            console.log("CORRECT STATE CHOSEN");
-
                             //add state to conquered list
                             conquerState();
+
+                            if (conqueredStates.length >= states.length) {
+                                gameover = true;
+                                return;
+                            }
 
                             //display a new state name
                             stateToConquer = displayState();
@@ -558,9 +556,6 @@ window.onload = function() {
                         
                             // Grow the snake
                             snake.grow();
-                        
-                            // Add a point to the score
-                            score++;
                         }
                     }
 
@@ -603,18 +598,41 @@ window.onload = function() {
 
         drawLevel();
         drawSnake();
+
+        //flash screen red if incorrect state
+        if (incorrectStateFlag) {
+            context.fillStyle = "rgba(255, 0, 0, 0.3)";
+            setTimeout(() => {  context.fillStyle = "rgba(0, 0, 0, 0)"; }, 1000);
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            context.fillStyle = "#000000";
+            context.font = "bold 48px Times";
+            drawCenterText("You can't conquer " + incorrectStateName + "!", 0, canvas.height/2, canvas.width);
+            setTimeout(() => {  context.fillStyle = "rgba(0, 0, 0, 0)"; }, 1000);
+            setTimeout(() => { context.fillRect(0, 0, canvas.width, canvas.height); }, 1000);
+
+            setTimeout(() => {  incorrectStateFlag = false; }, 1000);
+        }
+
+        
             
         // Game over
         if (gameover) {
             //display conquered states
             displayConqueredStates();
 
-            context.fillStyle = "rgba(0, 0, 0, 0.5)";
-            context.fillRect(0, 0, canvas.width, canvas.height);
+            //context.fillStyle = "rgba(0, 0, 0, 0.5)";
+            //context.fillRect(0, 0, canvas.width, canvas.height);
             
-            context.fillStyle = "#ffffff";
-            context.font = "24px Verdana";
-            drawCenterText("Score: " + score + " Press any key to start!", 0, canvas.height/2, canvas.width);
+            context.fillStyle = "#000000";
+            context.font = "bold 48px Times";
+            if (conqueredStates.length >= states.length) {
+                drawCenterText("CONGRATS! Ohio conquered the USA!", 0, canvas.height/2, canvas.width);
+            } else {
+                drawCenterText("Percentage of US Conquered by Ohio: " + getConquerPercentage() + "%", 0, canvas.height/2 - 60, canvas.width);
+                drawCenterText("Wanna increase that number?", 0, canvas.height/2, canvas.width);
+                drawCenterText("Press any key to start!", 0, canvas.height/2 + 60, canvas.width);
+            }
         }
     }
 
@@ -1074,8 +1092,8 @@ window.onload = function() {
         // Get the mouse position
         var pos = getMousePos(canvas, e);
         
-        if (gameover) {
-            // Start a new game
+        if (gameover && conqueredStates.length >= states.length) {
+        } else if (gameover) {
             tryNewGame();
         } else {
             // Change the direction of the snake
@@ -1085,7 +1103,8 @@ window.onload = function() {
     
     // Keyboard event handler
     function onKeyDown(e) {
-        if (gameover) {
+        if (gameover && conqueredStates.length >= states.length) {
+        } else if (gameover) {
             tryNewGame();
         } else {
             if (e.keyCode == 37 || e.keyCode == 65) {
