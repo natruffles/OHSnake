@@ -299,8 +299,20 @@ window.onload = function() {
         //set text parameters
         diagnosticContext.fillStyle = "#ffffff";
         diagnosticContext.font = "24px Verdana";
-        //var textdim = diagnosticContext.measureText(conqueredStates[i]);
-        //diagnosticContext.fillText(text, x + (width-textdim.width)/2, y);
+        drawCenterTextDiag("Check below to view your conquest!", 0, 50, diagnosticScreen.width);
+
+        let text = "";
+        //let tileNum = 0;
+        //let Tx = 0;
+        //let Ty = 0;
+        
+        for (let j = 0; j < conqueredStates.length; j++) {
+            text = conqueredStates[j] + ":";
+            diagnosticContext.fillText(text, Math.floor(diagnostic.width/10), 150 + 100*j);
+            //tileNum = determineCorrectTileNumber(conquerStates[j]);
+            //[Tx, Ty] = drawStateOnGameBoard(tileNum, 0, 0, true);
+            //diagnosticContext.drawImage(stateimage, Tx*tilew, Ty*tileh, tilew, tileh, tilex, tiley, level.tilewidth, level.tileheight);
+        }
     }
 
     //display a new state name whenever an apple is added
@@ -638,19 +650,19 @@ window.onload = function() {
                     context.fillRect(tilex, tiley, level.tilewidth, level.tileheight);
                 } else if (tile >= 2) {
                     // State
-                    drawState(tile, tilex, tiley);
+                    drawStateOnGameBoard(tile, tilex, tiley);
                 }
             }
         }
     }
 
     //If tile type is 2 or greater, draw the state based on tileNum
-    function drawState(tileNum, tilex, tiley) {
+    function drawStateOnGameBoard(tileNum, tilex, tiley, onlygetTxandTy = false) {
         // Draw state background
         context.fillStyle = "#f7e697";
         context.fillRect(tilex, tiley, level.tilewidth, level.tileheight);
         var tx = 0;
-        var ty = 3;
+        var ty = 0;
 
         // Draw the state image
         switch(tileNum) {
@@ -951,6 +963,10 @@ window.onload = function() {
                 tx = 1;
                 ty = 6;
                 break;
+        }
+
+        if (onlygetTxandTy) {
+            return [tx, ty];
         }
         var tilew = 64;
         var tileh = 64;
