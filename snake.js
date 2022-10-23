@@ -230,6 +230,8 @@ window.onload = function() {
         tileimage = images[0];
         images = loadImages(["assets/stateSprite.png"]);
         stateimage = images[0];
+        images = loadImages(["assets/mapBackground.png"]);
+        mapimage = images[0];
     
         // Add mouse events
         canvas.addEventListener("mousedown", onMouseDown);
@@ -593,8 +595,11 @@ window.onload = function() {
     // Render the game
     function render() {
         // Draw background of canvas
-        context.fillStyle = "#577ddb";
-        context.fillRect(0, 0, canvas.width, canvas.height);
+        //context.fillStyle = "#577ddb";
+        //context.fillRect(0, 0, canvas.width, canvas.height);
+
+        //draw map background
+        context.drawImage(mapimage, 0, 0);
 
         drawLevel();
         drawSnake();
@@ -642,12 +647,12 @@ window.onload = function() {
                 // Draw tiles based on their type
                 if (tile == 0) {
                     // Empty space
-                    context.fillStyle = "#f7e697";
-                    context.fillRect(tilex, tiley, level.tilewidth, level.tileheight);
+                    //context.fillStyle = "#f7e697";
+                    //context.fillRect(tilex, tiley, level.tilewidth, level.tileheight);
                 } else if (tile == 1) {
                     // Wall
-                    context.fillStyle = "#bcae76";
-                    context.fillRect(tilex, tiley, level.tilewidth, level.tileheight);
+                    //context.fillStyle = "#bcae76";
+                    //context.fillRect(tilex, tiley, level.tilewidth, level.tileheight);
                 } else if (tile >= 2) {
                     // State
                     drawStateOnGameBoard(tile, tilex, tiley);
@@ -658,9 +663,6 @@ window.onload = function() {
 
     //If tile type is 2 or greater, draw the state based on tileNum
     function drawStateOnGameBoard(tileNum, tilex, tiley, onlygetTxandTy = false) {
-        // Draw state background
-        context.fillStyle = "#f7e697";
-        context.fillRect(tilex, tiley, level.tilewidth, level.tileheight);
         var tx = 0;
         var ty = 0;
 
