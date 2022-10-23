@@ -990,7 +990,7 @@ window.onload = function() {
         }
         var tilew = 64;
         var tileh = 64;
-        context.drawImage(stateimage, tx*tilew, ty*tileh, tilew, tileh, tilex, tiley, level.tilewidth, level.tileheight);
+        context.drawImage(stateimage, tx*tilew, ty*tileh, tilew, tileh, tilex-16, tiley-16, level.tilewidth*1.5, level.tileheight*1.5);
     }
     
     // Draw the snake
