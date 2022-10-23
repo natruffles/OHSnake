@@ -1,2 +1,0 @@
-Here are the changes we made to the base snake game:
-Added score display to the death screen

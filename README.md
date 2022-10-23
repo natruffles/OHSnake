@@ -1,6 +1,7 @@
-# Snake Game HTML5
-A Snake Game with HTML5 Canvas and JavaScript that displays sprites using a texture atlas.
+# OHSnake
+A revamped snake game with HTML5 Canvas and JavaScript that displays sprites using a sprite sheet.
+Take over the USA from our home state of Ohio!
 
-This is a code example that belongs to the article: [Creating A Snake Game Tutorial With HTML5](http://rembound.com/articles/creating-a-snake-game-tutorial-with-html5)
+The repo that this project was forked from is based on this tutorial: [Creating A Snake Game Tutorial With HTML5](http://rembound.com/articles/creating-a-snake-game-tutorial-with-html5)
 
 [![Creating A Snake Game Tutorial With HTML5](screenshot.png?raw=true)](http://rembound.com/articles/creating-a-snake-game-tutorial-with-html5)
