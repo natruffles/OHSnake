@@ -37,6 +37,10 @@ window.onload = function() {
     // Get the canvas and context
     var canvas = document.getElementById("viewport"); 
     var context = canvas.getContext("2d");
+
+    var diagnosticScreen = document.getElementById("diagnostic"); 
+    var diagnosticContext = diagnosticScreen.getContext("2d");
+
     
     // Timing and frames per second
     var lastframe = 0;
@@ -254,10 +258,6 @@ window.onload = function() {
         //display a new state name
         stateToConquer = displayState();
 
-        //remove the list of conquered states from game over
-        let header = document.querySelector("h2");
-        header.innerHTML = "";
-
         //reset the incorrect state positions to each be in [0,0]
         //will immediately be overwritten in the addStates function below
         //incorrectStatePositions = new Array(numOfStatesToRender - 1).fill([0, 0]);
@@ -274,7 +274,6 @@ window.onload = function() {
 
     //display the states you conquered when the game ends:
     function displayConqueredStates() {
-        let header = document.querySelector("h2");
         let conqueredString = "Conquered States: ";
         for (let i = 0; i < conqueredStates.length; i ++) {
             if (i < conqueredStates.length - 1) {
@@ -283,12 +282,21 @@ window.onload = function() {
                 conqueredString = conqueredString.concat(conqueredStates[i] + "! Great job!");
             }
         }
-        header.innerHTML = conqueredString;
+
+        diagnosticScreen.height = conqueredStates.length * 100 + 150;
+        //set the text color 
+        diagnosticContext.fillStyle = "#bbbbbb";
+        diagnosticContext.fillRect(0, 0, diagnosticScreen.width, diagnosticScreen.height);
+
+        //set text parameters
+        diagnosticContext.fillStyle = "#ffffff";
+        diagnosticContext.font = "24px Verdana";
+        //var textdim = diagnosticContext.measureText(conqueredStates[i]);
+        //diagnosticContext.fillText(text, x + (width-textdim.width)/2, y);
     }
 
     //display a new state name whenever an apple is added
     function displayState() {
-        let header = document.querySelector("h1");
 
         //get random state name 
         let stateName = getRandomStateName();
@@ -297,7 +305,15 @@ window.onload = function() {
             stateName = getRandomStateName();
         }  
 
-        header.innerHTML = "State to Conquer: " + stateName;
+        diagnosticScreen.height = 100;
+        //set the text color 
+        diagnosticContext.fillStyle = "#bbbbbb";
+        diagnosticContext.fillRect(0, 0, diagnosticScreen.width, diagnosticScreen.height);
+
+        //draw text on the diagnosticScreen
+        diagnosticContext.fillStyle = "#ffffff";
+        diagnosticContext.font = "24px Verdana";
+        drawCenterTextDiag("State to Conquer: " + stateName, 0, diagnosticScreen.height/2, diagnosticScreen.width);
 
         return stateName;
     }
@@ -394,6 +410,9 @@ window.onload = function() {
             
             // Clear the canvas
             context.clearRect(0, 0, canvas.width, canvas.height);
+
+            //clear the diagnostic screen
+            diagnosticContext.clearRect(0, 0, diagnosticScreen.width, diagnosticScreen.height);
             
             // Draw a progress bar
             var loadpercentage = loadcount/loadtotal;
@@ -546,10 +565,10 @@ window.onload = function() {
     
     // Render the game
     function render() {
-        // Draw background
+        // Draw background of canvas
         context.fillStyle = "#577ddb";
         context.fillRect(0, 0, canvas.width, canvas.height);
-        
+
         drawLevel();
         drawSnake();
             
@@ -987,6 +1006,12 @@ window.onload = function() {
     function drawCenterText(text, x, y, width) {
         var textdim = context.measureText(text);
         context.fillText(text, x + (width-textdim.width)/2, y);
+    }
+
+    // Draw text that is centered on diagnostic screen
+    function drawCenterTextDiag(text, x, y, width) {
+        var textdim = diagnosticContext.measureText(text);
+        diagnosticContext.fillText(text, x + (width-textdim.width)/2, y);
     }
     
     // Get a random int between low and high, inclusive
