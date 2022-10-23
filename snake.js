@@ -595,8 +595,8 @@ window.onload = function() {
     // Render the game
     function render() {
         // Draw background of canvas
-        //context.fillStyle = "#577ddb";
-        //context.fillRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = "#353535";
+        context.fillRect(0, 0, canvas.width, canvas.height);
 
         //draw map background
         context.drawImage(mapimage, 0, 0);
