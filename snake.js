@@ -305,7 +305,7 @@ window.onload = function() {
             stateName = getRandomStateName();
         }  
 
-        diagnosticScreen.height = 100;
+        diagnosticScreen.height = 68;
         //set the text color 
         diagnosticContext.fillStyle = "#bbbbbb";
         diagnosticContext.fillRect(0, 0, diagnosticScreen.width, diagnosticScreen.height);
